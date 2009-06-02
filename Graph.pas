@@ -17,7 +17,7 @@
 unit Graph;
 
 interface
-uses Graphics, Classes, Forms, Dialogs, SysUtils;
+uses Graphics, Classes, Forms, Dialogs, SysUtils, Types;
 
 (*-----------------------------------------------------------------*)
 const
@@ -35,6 +35,13 @@ const
       Magenta = clFuchsia;
       BROWN   = TColor($004B96);
 
+(*-----------------------------------------------------------------*)
+type PointType = TPoint;
+     PointList = array[1..200] of PointType;
+
+     TColor = Graphics.TColor;
+     TRGBPack  = packed array[0..3] of Byte;
+     PTRGBPack = ^TRGBPack;
 (*-----------------------------------------------------------------*)
 function  InitGr(APicture: TPicture; aWidth: integer = 0; aHeight: integer = 0): boolean;
 procedure SetGrSize(mx: integer=0; my: integer=0);
@@ -72,6 +79,8 @@ procedure PutPixel(x, y: integer; Color: TColor);
 procedure Rectangle(x1, y1, x2, y2: integer);
 procedure Ellipse(x1, y1, x2, y2: integer);
 procedure Circle(x, y, r: integer);
+procedure FillPoly(Vert: Array of TPoint); overload
+procedure FillPoly(NumVert: Word; var Vert: Array of TPoint); overload
 
 procedure TextOut(x, y: integer; Text: string);
 procedure OutText(Text: string);
@@ -83,16 +92,20 @@ function TextHeight(Text: string): integer;
 procedure InitGraph(gd, gm: integer; Path: String=''); {InitGr}
 procedure OutTextXY(x, y: integer; Text: string);   {TextOut}
 function  GraphResult: integer;
-
 (*-----------------------------------------------------------------*)
 const grOk = 0;
       DETECT = 0;
       DefRatio = 3 / 4;  { DefMaxX / DefMaxY }
       DefMaxX = 800;
       DefMaxY = Trunc(DefMaxX * DefRatio);
-
 (*-----------------------------------------------------------------*)
 function GetPic: TPicture;
+(*-----------------------------------------------------------------*)
+function NumToStr(v: Extended; prec: byte): string;
+function  RGB(r, g, b: Byte): TColor;
+Procedure RGBSplit(Color: TColor; var r, g, b: Byte);
+function MulColor(Color: TColor; Num: Real): TColor;
+(*-----------------------------------------------------------------*)
 implementation
 var FPicture: TPicture;
     FCanvas:  TCanvas;
@@ -100,6 +113,7 @@ var FPicture: TPicture;
     FBkColor: TColor;
     FGrResult: integer;
 
+(*-----------------------------------------------------------------*)
 function GetPic: TPicture; begin Result := FPicture; end;
 (*-----------------------------------------------------------------*)
 procedure chkGr; begin Assert(GraphOk, 'Modul grafic nu a fost initializat!'); end;
@@ -113,6 +127,22 @@ begin
 end;
 procedure Lock; begin FCanvas.Lock; end;
 procedure UnLock; begin FCanvas.UnLock; end;
+(*-----------------------------------------------------------------*)
+procedure FillPoly(Vert: Array of TPoint);
+begin Lock; FCanvas.Polygon(Vert); Unlock; end;
+(*-----------------------------------------------------------------*)
+procedure FillPoly(NumVert: Word; var Vert: Array of TPoint);
+var Verts: array of TPoint;
+    i: integer;
+begin
+  SetLength(Verts, NumVert);
+  i := NumVert;
+  while i > 0 do begin
+    dec(i);
+    Verts[i] := Vert[i];
+  end;
+  Lock; FCanvas.Polygon(Verts); Unlock;
+end;
 (*-----------------------------------------------------------------*)
 procedure SetGrSize(mx: integer=0; my: integer=0);
 var ax, ay: integer;
@@ -202,7 +232,56 @@ procedure TextOut(x, y: integer; Text: string); begin chkGr; Lock;FCanvas.TextOu
 procedure OutText(Text: string);begin chkGr; Lock;with FCanvas do TextOut(PenPos.X, PenPos.Y, Text);Unlock;end;
 function TextWidth(Text: string): integer; begin chkGr; Result := FCanvas.TextWidth(Text); end;
 function TextHeight(Text: string): integer; begin chkGr; Result := FCanvas.TextHeight(Text); end;
+(*-----------------------------------------------------------------*)
+{Aditionale}
+(*-----------------------------------------------------------------*)
+function  RGB(r, g, b: Byte): TColor;
+begin
+   TRGBPack(Result)[0] := r;
+   TRGBPack(Result)[1] := g;
+   TRGBPack(Result)[2] := b;
+end;
+(*-----------------------------------------------------------------*)
+Procedure RGBSplit(Color: TColor; var r, g, b: Byte);
+var P: PTRGBPack;
+begin
+      P := @Color;
+      r := P^[0];  g := P^[1];  b := P^[2];
+end;
+(*-----------------------------------------------------------------*)
+function MulColor(Color: TColor; Num: Real): TColor;
+var r,g,b: byte;
+begin
+  RGBSplit(Color, r, g, b);
+  Result := RGB(Trunc(r*Num), Trunc(g*Num), Trunc(b*Num));
+end;
+(*-----------------------------------------------------------------*)
+function NumToStr(v: Extended; prec: byte): string;
+var s, r: string;
+    t: Extended;
+begin
+   t := Int(abs(v));
+   if t <> 0 then begin
+     s := '';
+     repeat
+       s := Chr(Trunc(t) mod 10 + Ord('0')) + s ;
+       t := Int(t/10);
+     until t = 0;
+     if v < 0 then s := '-' +  s;
+   end else s := '0';
 
+   t := Frac(abs(v));
+   if (prec <> 0)and(t <> 0) then begin
+     s := s + '.';
+     repeat
+       t := t * 10;
+       s := s + Chr(Trunc(t)+Ord('0'));
+       t := Frac(t);
+       dec(prec);
+     until (prec = 0)or(t = 0);
+   end;
+   NumToStr := s;
+end;
 (*-----------------------------------------------------------------*)
 procedure InitGraph(gd, gm: integer; Path: String='');
 begin

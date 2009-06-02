@@ -1,11 +1,10 @@
 object Form1: TForm1
   Left = 191
   Top = 109
-  Width = 314
-  Height = 311
-  Hint = 'F1 - Ajutor'
-  Caption = 'Cube 3D'
-  Color = clBtnFace
+  Width = 300
+  Height = 300
+  Caption = 'Figuri 3D'
+  Color = clBackground
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -23,14 +22,14 @@ object Form1: TForm1
   object Image1: TImage
     Left = 0
     Top = 0
-    Width = 306
-    Height = 277
+    Width = 292
+    Height = 266
     Align = alClient
   end
   object Timer1: TTimer
     Interval = 30
     OnTimer = Timer1Timer
-    Left = 8
-    Top = 8
+    Left = 16
+    Top = 264
   end
 end

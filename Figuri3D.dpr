@@ -3,7 +3,7 @@ program Figuri3D;
 uses
   Forms,
   MainForm in 'MainForm.pas' {Form1},
-  Cube in 'Cube.pas';
+  Fig3D in 'Fig3D.pas';
 
 {$R *.res}
 

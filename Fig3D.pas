@@ -1,8 +1,8 @@
 {********************************
    Autor: Dumitru Uzun (DUzun)
-   Data: 25.05.2009
+   Data: 01.06.2009
  ********************************}
-Unit Cube;
+Unit Fig3D;
 interface
 USES  CRT,  Graph, UFig, UCalcVec, UCalc3D;
 
@@ -28,12 +28,13 @@ implementation
 PROCEDURE Help;
 BEGIN
   writeln(['Copyright (C) 2009. Dumitru Uzun (DUzun)'#10]);
-  Writeln(['Deplasare:       <Sus>, <Jos>, <Dreapta>, <Stanga>, <+>, <->']);
-  Writeln(['Deplasare:       <8>, <2>, <6>, <4>, <5>, <0>']);
-  Writeln(['Directie rotire: <X>, <Y>, <Z>']);
-  Writeln(['Viteza rotire:   <,>, <.>, <Spatiu>']);
-  Writeln(['Tip proiectie:   <C>entrala, <P>aralela']);
-  Writeln(['Iesire:          <Esc>']);
+  Writeln(['Deplasare:        <Sus>, <Jos>, <Dreapta>, <Stanga>, <+>, <->']);
+  Writeln(['Deplasare:        <8>, <2>, <6>, <4>, <5>, <0>']);
+  Writeln(['Directie rotire:  <X>, <Y>, <Z>']);
+  Writeln(['Viteza rotire:    <,>, <.>, <Spatiu>']);
+  Writeln(['Rotire relativa:  <R>']);
+  Writeln(['Schimb figura:    <F>']);
+  Writeln(['Iesire:           <Esc>']);
   readkey;
 END;
 {---------------------------------------------------------------}
@@ -78,15 +79,15 @@ BEGIN
       Halt(1);
    END;
 
-//   Help;
+//    Help;
 
    {Setari ale modului grafic}
    SetBkColor(BLACK);
-   SetColor(GREEN);
-   SetFillColor(GREEN);
+   SetColor(BROWN);
+   SetFillColor(BROWN);
    ClearViewPort;
 
-   alfa := 1;     {Viteza de rotire in grade}
+   alfa := 2;     {Viteza de rotire in grade}
    ax   := Ax_Y;  {axa de rotire: 1 - Ox, 2 - Oy, 3 - Oz}
    Rel  := false; {Rotirea este relativa sau absoluta}
 //   Depth := (MidX + MidY) div 2; {Distanta pana la centrul de proiectie}
@@ -106,16 +107,17 @@ BEGIN
   {Mijlocul ecranului}
    MidX := GetMaxX div 2;
    MidY := GetMaxY div 2;
-   RazaFig := (MidX + MidY) div 50;
+   RazaFig := (MidX + MidY) div 40;
 
    if Rel then   RotSisRel(Reper,  r(alfa), ax)   {Rotirea fata de axele de coordonate}
           else   RotSis   (Reper,  r(alfa), ax);  {Rotirea fata relativa, fata de figura}
 
    ClearViewPort;
-   DrowFig(Reper);          {Procedura de desenare a figurei}
+   DrowFig(Reper);       {Procedura de desenare a figurei}
    VecParal(V, Reper[1], RazaFig);  AddVec(V, Reper[0], V);  Line2D(Reper[0], V);
    VecParal(V, Reper[2], RazaFig);  AddVec(V, Reper[0], V);  Line2D(Reper[0], V);
    VecParal(V, Reper[3], RazaFig);  AddVec(V, Reper[0], V);  Line2D(Reper[0], V);
+
 END;
 {---------------------------------------------------------------}
 

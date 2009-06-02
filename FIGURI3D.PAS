@@ -1,9 +1,11 @@
 Program Figuri_3D;
 Uses Graph, CRT, UCalc3D, UCalcVec, UGrafica, UFig;
 {---------------------------------------------------------------}
-var R1, R2: TReper;
-    raza, alfa: integer;
+var Reper: TReper;
+    Pl: TPlan;
+    alfa: integer;
     ax: byte;
+    Rel: boolean;
 {---------------------------------------------------------------}
 function Taste: char;
 var k: char;
@@ -19,15 +21,17 @@ begin
     ',': dec(alfa);
     '.': inc(alfa);
     ' ': alfa := 0;
-    #72: R1[0][2] := R1[0][2]+3;  {Up}
-    #80: R1[0][2] := R1[0][2]-3;  {Down}
-    #77: R1[0][1] := R1[0][1]+3;  {Right}
-    #75: R1[0][1] := R1[0][1]-3;  {Left}
-    '-': R1[0][3] := R1[0][3]+30;  {-}
-    '+': R1[0][3] := R1[0][3]-30;  {+}
+    #72: Reper[0][2] := Reper[0][2]+3;  {Up}
+    #80: Reper[0][2] := Reper[0][2]-3;  {Down}
+    #77: Reper[0][1] := Reper[0][1]+3;  {Right}
+    #75: Reper[0][1] := Reper[0][1]-3;  {Left}
+    '-': Reper[0][3] := Reper[0][3]+30;  {-}
+    '+': Reper[0][3] := Reper[0][3]-30;  {+}
 
-    '*': R1[2][2] := R1[2][2]+3;
-    '/': R1[2][2] := R1[2][2]-3;
+    '*': Reper[2][2] := Reper[2][2]+3;
+    '/': Reper[2][2] := Reper[2][2]-3;
+    'R': Rel := not Rel;
+    'F': inc(Figures.Active);
     end;
     Taste := k;
   end else Taste := #0;
@@ -58,24 +62,33 @@ end;
 
 alfa := 1;     {Viteza de rotire in grade}
 ax   := 2;     {axa de rotire: 1 - Ox, 2 - Oy, 3 - Oz}
-raza := (MidX + MidY) div 120; {raza figurii}
+Rel  := false; {Rotirea este relativa sau absoluta}
+RazaFig := (MidX + MidY) div 120; {raza figurii}
 
-{Pozitionarea Reperului R1}
-R1[0] := VecZero;
-VecParal(R1[1], VecI, 30);
-VecParal(R1[2], VecJ, 30);
-VecParal(R1[3], VecK, 30);
-RotSis(R1, r(30), 1);
-R2 := R1;
+{Pozitionarea reperului Reper}
+Reper[0] := VecZero;
+VecParal(Reper[1], VecI, 30);
+VecParal(Reper[2], VecJ, 30);
+VecParal(Reper[3], VecK, 30);
+//RotSis(Reper, Reper(30), 1);
 
 repeat
   ChgPage;
-  RotSis(R1,  r(alfa), ax);
-  RotSis(R2, -r(alfa), 3-ax);
-  SubVec(R2[0], VecZero, R1[0]); {R2[0] := -R1[0]}
+  if Rel then   RotSisRel(Reper,  r(alfa), ax)   {Rotirea fata de axele de coordonate}
+         else   RotSis   (Reper,  r(alfa), ax);  {Rotirea fata relativa, fata de figura}
 
-  Cub(R1, raza);
-  Icosaedru(R2, raza);
+
+  with Pl do C := EcPlan(n, Reper[0], Reper[2], Reper[3]);
+  with Pl do begin
+     OutTextXY(1, 1,                 'A: ' + NumToStr(n[1], 2));
+     OutTextXY(1, TextHeight('H'),   'B: ' + NumToStr(n[2], 2));
+     OutTextXY(1, 2*TextHeight('H'), 'C: ' + NumToStr(n[3], 2));
+     OutTextXY(1, 3*TextHeight('H'), 'D: ' + NumToStr(C, 2));
+     OutTextXY(1, 4*TextHeight('H'), 'Cos: ' + NumToStr(CosVec(VecI, n), 2));
+  end;
+
+  {Desenarea figurii active}
+  DrowFig(Reper);
 until Taste = #27; {<ESC>}
 
 Help(false);
