@@ -1,0 +1,32 @@
+object Form1: TForm1
+  Left = 698
+  Height = 300
+  Top = 314
+  Width = 300
+  Caption = 'Figuri 3D'
+  ClientHeight = 300
+  ClientWidth = 300
+  Color = clBackground
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Courier New'
+  OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
+  OnResize = FormResize
+  ShowHint = True
+  LCLVersion = '2.0.8.0'
+  object Image1: TImage
+    Left = 0
+    Height = 300
+    Top = 0
+    Width = 300
+    Align = alClient
+  end
+  object Timer1: TTimer
+    Interval = 30
+    OnTimer = Timer1Timer
+    left = 16
+    top = 264
+  end
+end

@@ -11,7 +11,7 @@
  * - 23.05.2009
  *   Am adaugat InitGraph si FCanvas
  * - 25.05.2009
- *   Am adaugat constantele pentru culori   
+ *   Am adaugat constantele pentru culori
  ****************************************************}
 
 unit Graph;
@@ -79,8 +79,8 @@ procedure PutPixel(x, y: integer; Color: TColor);
 procedure Rectangle(x1, y1, x2, y2: integer);
 procedure Ellipse(x1, y1, x2, y2: integer);
 procedure Circle(x, y, r: integer);
-procedure FillPoly(Vert: Array of TPoint); overload
-procedure FillPoly(NumVert: Word; var Vert: Array of TPoint); overload
+procedure FillPoly(Vert: Array of TPoint); {* overload *}
+procedure FillPoly(NumVert: Word; var Vert: Array of TPoint); {* overload *}
 
 procedure TextOut(x, y: integer; Text: string);
 procedure OutText(Text: string);

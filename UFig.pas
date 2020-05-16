@@ -1,10 +1,14 @@
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$H+}
+{$ENDIF}
 {$F+}
 {$N+}
 Unit UFig;
 interface
 uses UCalc3D, UCalcVec, UPoligon, Graph;
 {---------------------------------------------------------------}
-type  TDrowFig = PROCEDURE (Sis: TReper);
+type  TDrowFig = procedure (Sis: TReper);
       TPointList = array[0..100] of PointType;
       PPointList = ^TPointList;
 
@@ -14,11 +18,11 @@ var RazaFig: integer;
     Figures: record n: byte; Drow: array[byte] of TDrowFig; end;
     ActiveFig : byte;
 {---------------------------------------------------------------}
-PROCEDURE Cub(Sis: TReper);                   {Desenarea cubului}
-PROCEDURE FillCub(Sis: TReper);               {Desenarea cubului cu fete}
-PROCEDURE Tetraedru(Sis: TReper);             {Desenarea tetraedrului}
-PROCEDURE Octaedru(Sis: TReper);              {Desenarea octaedrului}
-PROCEDURE Icosaedru(Sis: TReper);             {Desenarea icosaedrului}
+procedure Cub(Sis: TReper);                   {Desenarea cubului}
+procedure FillCub(Sis: TReper);               {Desenarea cubului cu fete}
+procedure Tetraedru(Sis: TReper);             {Desenarea tetraedrului}
+procedure Octaedru(Sis: TReper);              {Desenarea octaedrului}
+procedure Icosaedru(Sis: TReper);             {Desenarea icosaedrului}
 {---------------------------------------------------------------}
 function Line2d(p1, p2: TVec2Real): boolean;
 procedure FillPoly2D(var Poli: TPoli);
@@ -156,7 +160,7 @@ begin
   end;
 end;
 {---------------------------------------------------------------}
-PROCEDURE Tetraedru(Sis: TReper);          {Desenarea tetraedrului}
+procedure Tetraedru(Sis: TReper);          {Desenarea tetraedrului}
 VAR P : array[1..4] of TVector;
     V : TVector;
     i : integer;
@@ -185,7 +189,7 @@ BEGIN
     Line2D(P[i], P[i mod 4 + 1]);
 END;
 {---------------------------------------------------------------}
-PROCEDURE Octaedru(Sis: TReper);          {Desenarea octaedrului}
+procedure Octaedru(Sis: TReper);          {Desenarea octaedrului}
 VAR P : array[0..5] of TVector;
     i : integer;
 BEGIN
@@ -242,15 +246,15 @@ end;
 {---------------------------------------------------------------}
 begin
   RazaFig := 10;
-  DrowFig := DrowActiveFigure;
+  DrowFig := @DrowActiveFigure;
   ActiveFig := 1;
   with Figures do begin
      n := 5;
-     Drow[0] := Cub;
-     Drow[1] := FillCub;
-     Drow[2] := Tetraedru;
-     Drow[3] := Octaedru;
-     Drow[4] := Icosaedru;
+     Drow[0] := @Cub;
+     Drow[1] := @FillCub;
+     Drow[2] := @Tetraedru;
+     Drow[3] := @Octaedru;
+     Drow[4] := @Icosaedru;
      Drow[n] := nil;
   end;
 end.

@@ -1,11 +1,18 @@
 unit MainForm;
 
+{$IFDEF FPC}{$MODE DELPHI}{$ENDIF}
+{$H+}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, Jpeg, ShellAPI,
-  Graph, UFig, Fig3d;
+  Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls,
+  Graph, UFig, Fig3D,
+  {$IFNDEF FPC}Jpeg, ShellAPI
+  {$ELSE}lclintf
+  {$ENDIF}
+  ;
 
 type
   TForm1 = class(TForm)
@@ -26,9 +33,11 @@ var
   Form1: TForm1;
   Counter: DWord;
 
+const AUTHOR_URL = 'https://dcms.duzun.me/_DUzun';
+
 implementation
 
-{$R *.dfm}
+{$R *.lfm}
 
 function SaveJPG(FileName: String): String;
 var i: integer;
@@ -54,7 +63,13 @@ end;
 
 procedure Author;
 begin
-  ShellExecute(0, 0, 'http://duzun.teologie.net/_DUzun', 0, 0, 0);
+  {$IFNDEF FPC}Jpeg, ShellAPI
+    // ShellAPI is Windows only
+    ShellExecute(0, 0, AUTHOR_URL, 0, 0, 0);
+    Exit;
+  {$ELSE}
+    OpenURL(AUTHOR_URL);
+  {$ENDIF}
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);

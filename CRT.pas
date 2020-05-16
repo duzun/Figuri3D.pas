@@ -23,7 +23,9 @@ procedure writeln(param: array of const);
 procedure write(param: array of const);
 
 implementation
-uses Dialogs, Windows, SysUtils;
+uses Dialogs, SysUtils
+  {$IFDEF FPC}{$ELSE}, Windows{$ENDIF}
+  ;
 
 const endl = #13#10;
 var msg_buf: String;

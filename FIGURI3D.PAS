@@ -1,3 +1,4 @@
+{ CLI/Graph version of the program, originally compiled with TMT Pascal }
 Program Figuri_3D;
 Uses Graph, CRT, UCalc3D, UCalcVec, UGrafica, UFig;
 {---------------------------------------------------------------}

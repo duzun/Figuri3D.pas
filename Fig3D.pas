@@ -34,6 +34,7 @@ BEGIN
   Writeln(['Viteza rotire:    <,>, <.>, <Spatiu>']);
   Writeln(['Rotire relativa:  <R>']);
   Writeln(['Schimb figura:    <F>']);
+  Writeln(['Figuri:           <F2>..<F6>']);
   Writeln(['Iesire:           <Esc>']);
   readkey;
 END;
@@ -123,4 +124,3 @@ END;
 
 BEGIN
 END.
-

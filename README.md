@@ -4,25 +4,27 @@
 
 ### This program is an example of projecting 3D geometrical figures in movements onto a 2D plane in Pascal
 
+Înițial am folosit Delphi 7, iar recent am adaptat proiectul la [Lazarus](https://www.lazarus-ide.org/).
+
 #### Taste active
 
-Deplasare:       &lt;Sus&gt;, &lt;Jos&gt;, &lt;Dreapta&gt;, &lt;Stanga&gt;, &lt;+&gt;, &lt;-&gt;
-Directie rotire: &lt;X&gt;, &lt;Y&gt;, &lt;Z&gt;
-Viteza rotire:   &lt;,&gt; sau &lt;.&gt;
-Schimb figură:   &lt;F&gt;
-Figuri:          &lt;F2&gt;..&lt;F6&gt;
-Salvare imagine: &lt;S&gt;
-Iesire:          &lt;Esc&gt;
-Ajutor:          &lt;F1&gt;
+- Deplasare:       &lt;Sus&gt;, &lt;Jos&gt;, &lt;Dreapta&gt;, &lt;Stanga&gt;, &lt;+&gt;, &lt;-&gt;
+- Directie rotire: &lt;X&gt;, &lt;Y&gt;, &lt;Z&gt;
+- Viteza rotire:   &lt;,&gt; sau &lt;.&gt;
+- Schimb figură:   &lt;F&gt;
+- Figuri:          &lt;F2&gt;..&lt;F6&gt;
+- Salvare imagine: &lt;S&gt;
+- Iesire:          &lt;Esc&gt;
+- Ajutor:          &lt;F1&gt;
 
 
 #### Keyboard Shortcuts
 
-Movement:           &lt;Up&gt;, &lt;Down&gt;, &lt;Right&gt;, &lt;Left&gt;, &lt;+&gt;, &lt;-&gt;
-Rotation direction: &lt;X&gt;, &lt;Y&gt;, &lt;Z&gt;
-Rotation speed:     &lt;,&gt; or &lt;.&gt;
-Figures:            &lt;F2&gt;..&lt;F6&gt;
-Next fig:           &lt;F&gt;
-Save image:         &lt;S&gt;
-Exit:               &lt;Esc&gt;
-Help:               &lt;F1&gt;
+- Movement:           &lt;Up&gt;, &lt;Down&gt;, &lt;Right&gt;, &lt;Left&gt;, &lt;+&gt;, &lt;-&gt;
+- Rotation direction: &lt;X&gt;, &lt;Y&gt;, &lt;Z&gt;
+- Rotation speed:     &lt;,&gt; or &lt;.&gt;
+- Figures:            &lt;F2&gt;..&lt;F6&gt;
+- Next fig:           &lt;F&gt;
+- Save image:         &lt;S&gt;
+- Exit:               &lt;Esc&gt;
+- Help:               &lt;F1&gt;
